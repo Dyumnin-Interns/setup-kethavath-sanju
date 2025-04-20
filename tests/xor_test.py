@@ -1,6 +1,5 @@
 import cocotb
-from cocotb.triggers import Timer, RisingEdge
-
+from cocotb.triggers import Timer
 
 @cocotb.test()
 async def xor_test(dut):
@@ -12,4 +11,7 @@ async def xor_test(dut):
         dut.a.value = a[i]
         dut.b.value = b[i]
         await Timer(1, 'ns')
-        assert dut.y.value == y[i], f"Error at iteration {i}"
+        actual = int(dut.y.value)
+        expected = y[i]
+        print(f"Test {i}: a={a[i]} b={b[i]} → y={actual} (expected {expected})")
+        assert actual == expected, f"Error at iteration {i}: got {actual}, expected {expected}"
